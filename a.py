@@ -38,7 +38,7 @@ def contrast(RGB):
     #print("S   = ",S,least(S))
     L=[0,0,0]
     for k in range(3):
-        if RGB[k] >= 127:
+        if RGB[k] > 127:
             L[k]=255-RGB[k]
         else:
             L[k]=RGB[k]
@@ -51,13 +51,19 @@ def contrast(RGB):
     t=(w-RGB[ll])/S[ll]
     for i in range(3):
         Z[i] = int(RGB[i] + t * S[i])
+        if Z[i] < 0 :
+            Z[i] = 0
+        if Z[i] > 255 :
+            Z[i] = 255    
     return Z
 
 def tile(surf,x,y,width,height,kolor,num,myfont):
+    print(kolor,end="")
     P.draw.rect(surf,kolor,(x,y,width,height))
     if num !="":
         P.draw.rect(surf,[0,0,0],(x,y,width,height),4)
         k2 = contrast(kolor)
+        print(k2)
         surf2 = myfont.render(str(num),1,k2)
         ss = myfont.size(str(num))
         surf.blit(surf2,(x+(width-ss[0])/2,y+(height-ss[1])/2))
@@ -72,10 +78,10 @@ def switch_flip(S, P1, P2, width, height, myfont):
     c2=int(c2)
     r2=int(r2)
     tile(S,c1*width,r1*height,width,height, kolor[c2][r2], num[c2][r2], myfont )
-    print("tiling ",c2,r2,num[c1][r1])
+    #print("tiling ",c2,r2,num[c1][r1])
     tile(S,c2*width,r2*height,width,height, kolor[c1][r1], num[c1][r1], myfont )
-    print("tiling ",c1,r1,num[c2][r2])
-    print("switching ", num[c1][r1] , " and ", num[c2][r2] )
+    #print("tiling ",c1,r1,num[c2][r2])
+    #print("switching ", num[c1][r1] , " and ", num[c2][r2] )
     k=kolor[c2][r2]
     kolor[c2][r2] = kolor[c1][r1]
     kolor[c1][r1] = k
@@ -91,21 +97,14 @@ def loop(S,width,height,myfont):
             if E.type == P.KEYDOWN:
                 if E.key == P.K_ESCAPE:
                     looping = False
-                
                 if E.key == P.K_m:                    
-                    
-                    for of_pair in range (1):
+                    for of_pair in range (2):
                         to  = R.randint(0,grid-1),R.randint(0,grid-1)
                         fro = R.randint(0,grid-1),R.randint(0,grid-1)
                         while to == fro or to ==( grid-1,grid-1) or fro == (grid-1,grid-1) :
                             fro = R.randint(0,grid-1),R.randint(0,grid-1)
-                    #to=1,1
-                    #fro=2,2
-                    print(grid,to,fro)
                     switch_flip(S,to,fro,width,height,myfont)
-                                               
             if E.type == P.MOUSEBUTTONDOWN:
-
                 mx,my = P.mouse.get_pos()
                 atcol = mx * grid // box[0]
                 atrow = my * grid // box[1]
@@ -113,9 +112,7 @@ def loop(S,width,height,myfont):
                 height=box[1]/grid
                 x=atcol*width
                 y=atrow*height
-                #print(contrast(kolor[atrow][atcol]))
-                #looping=False
-    P.quit()
+    P.display.quit()
     return
 
 def main():
@@ -127,7 +124,7 @@ def main():
       
     for row in range(grid):
         for col in range(grid):
-            print(col,row,row*grid+col+1)
+            #print(col,row,row*grid+col+1)
             num[col][row] = row*grid+col+1
             if col == grid - 1 and row == grid - 1:
                 kolor[col][row]=white

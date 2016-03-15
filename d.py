@@ -41,7 +41,7 @@ def contrast(RGB):
     print("S   = ",S,least(S))
     L=[0,0,0]
     for k in range(3):
-        if RGB[k] >= 127:
+        if RGB[k] > 127:
             L[k]=255-RGB[k]
         else:
             L[k]=RGB[k]
@@ -55,29 +55,36 @@ def contrast(RGB):
     print("t   =  ",t)
     for i in range(3):
         Z[i] = int(RGB[i] + t * S[i])
+        if Z[i] < 0 :Z[i] = 0
+        if Z[i] > 255 : Z[i] = 255 
+    print("Z   =  ",Z)
+    print("============================")
     return Z
 
 def main():
-    x,y = 100,100
-    w,h = 200,200
-    size = [400,400]
-    white = [255,255,255]
-    blue = [0,0,255]
-    S = init(size,white)
-    n = 5
-    myfont=P.font.SysFont(None,350//n)
-    KK=[R.randint(0,255),R.randint(0,255),R.randint(0,255)] 
-    #KK = [1,2,8]
-    P.draw.rect(S,KK,(x,y,w,h),0)
-    kolor=contrast(KK)
-    print("F   = ",kolor)
-    label='733t'
-    surf2=myfont.render(str(label),1,kolor)
-    ss= myfont.size(str(label))
-    S.blit(surf2,(x+(w-ss[0])/2,y+(h-ss[1])/2))
-    P.display.flip()
-    loop()
+    for r in range(0,255):
+        for g in range(0,255):
+            for b in range(0,255):
+                k=contrast([r,g,b])
+                flag=0
+                for i in range(0,2):
+                    if  k[i] < 0 or k[i] >255:
+                        flag = 1
 
+                    if flag ==1 :
+                        print ([r,g,b],k)
+
+
+
+
+   
+    
+    
+    
+    
+    
+    
+    
 if __name__ == "__main__":
     main()
 
