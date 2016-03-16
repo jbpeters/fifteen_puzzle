@@ -8,6 +8,7 @@ white = [255,255,255]
 grid  = 4 
 num   = [[0 for _ in range(grid)] for _ in range(grid)]
 kolor = [[0 for _ in range(grid)] for _ in range(grid)]
+D     = [[0 for _ in range(grid)] for _ in range(grid)]
 
  
 def init (size,kolor):
@@ -80,6 +81,17 @@ def switch_flip(S, P1, P2, width, height, myfont):
     num[c2][r2] = num[c1][r1]
     num[c1][r1] = n
 
+def fetch(G):
+    f=R.randint(0,G-1),R.randint(0,G-1)
+    return f
+
+def display():
+    for row in range(grid):
+        for col in range(grid):
+            D[col][row]=num[row][col]
+    return D
+
+
 def loop(S,width,height,myfont):
     looping = True
     print("looping")
@@ -88,13 +100,23 @@ def loop(S,width,height,myfont):
             if E.type == P.KEYDOWN:
                 if E.key == P.K_ESCAPE:
                     looping = False
+
+                if E.key == P.K_d:
+                    print(display())
+
                 if E.key == P.K_m:                    
-                    for of_pair in range (2):
-                        to  = R.randint(0,grid-1),R.randint(0,grid-1)
-                        fro = R.randint(0,grid-1),R.randint(0,grid-1)
-                        while to == fro or to ==( grid-1,grid-1) or fro == (grid-1,grid-1) :
-                            fro = R.randint(0,grid-1),R.randint(0,grid-1)
-                    switch_flip(S,to,fro,width,height,myfont)
+                    for of_pair in range (22):
+                        to  = fetch(grid)
+                        fro = fetch(grid)
+                        if to == fro:
+                            fro = fetch(grid)
+                        elif to == (grid-1,grid-1):
+                            to = fetch(grid)
+                        elif fro == (grid-1,grid-1):
+                            fro = fetch(grid)
+                        switch_flip(S,to,fro,width,height,myfont)
+                        #print(of_pair,"to = ",to,num[to[0]][to[1]]," fro= ",fro,num[fro[0]][fro[1]] )
+                        
             if E.type == P.MOUSEBUTTONDOWN:
                 mx,my = P.mouse.get_pos()
                 atcol = mx * grid // box[0]
