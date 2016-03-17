@@ -1,16 +1,12 @@
 #! /usr/bin/python3
-
 import pygame as P
 import random as R
-
 box   = (w,h) = (700,700)
 white = [255,255,255]
 grid  = 4 
 num   = [[0 for _ in range(grid)] for _ in range(grid)]
 kolor = [[0 for _ in range(grid)] for _ in range(grid)]
 D     = [[0 for _ in range(grid)] for _ in range(grid)]
-
- 
 def init (size,kolor):
     P.display.init()
     P.font.init()
@@ -18,7 +14,6 @@ def init (size,kolor):
     S.fill(kolor)
     P.display.flip()
     return S
-
 def least(A):
     if  A[0] <= A[1]:
         if A[0] <= A[2]:
@@ -29,7 +24,6 @@ def least(A):
         return 1
     else:
         return 2
-
 def contrast(RGB):
     Z=[0,0,0]
     C=[127,127,127]
@@ -53,7 +47,6 @@ def contrast(RGB):
         if Z[i] > 255 :
             Z[i] = 255    
     return Z
-
 def tile(surf,x,y,width,height,kolor,num,myfont):
     P.draw.rect(surf,kolor,(x,y,width,height))
     if num !="":
@@ -64,7 +57,6 @@ def tile(surf,x,y,width,height,kolor,num,myfont):
         surf.blit(surf2,(x+(width-ss[0])/2,y+(height-ss[1])/2))
     P.display.flip()
     return
-
 def switch_flip(S, P1, P2, width, height, myfont):
     c1,r1 = P1
     c1=int(c1)
@@ -80,29 +72,19 @@ def switch_flip(S, P1, P2, width, height, myfont):
     n = num[c2][r2]
     num[c2][r2] = num[c1][r1]
     num[c1][r1] = n
-
-def fetch(G):
-    f=R.randint(0,G-1),R.randint(0,G-1)
-    return f
-
-
-def new_fetch(G):    
+def fetch(G):    
     px = R.randint(0,G-1)
     py = R.randint(0,G-1)
-    if px == py :print("diag",px,py)
     while ( px == G-1 and py== G-1  ):
         px=R.randint(0,G-1)
         py=R.randint(0,G-1)
     f = px,py
     return f
-
 def display():
     for row in range(grid):
         for col in range(grid):
             D[col][row]=num[row][col]
     return D
-
-
 def loop(S,width,height,myfont):
     looping = True
     print("looping")
@@ -111,31 +93,24 @@ def loop(S,width,height,myfont):
             if Ev.type == P.KEYDOWN:
                 if Ev.key == P.K_ESCAPE:
                     looping = False
-            
                 if Ev.key == P.K_d:
                     print(display())
-            
                 if Ev.key == P.K_m:                   
-                    print("///////////////////////////////////")
-                    for of_pair in range(12):
-                        E=new_fetch(grid)
-                        F=new_fetch(grid)
+                    for of_pair in range(22):
+                        E=fetch(grid)
+                        F=fetch(grid)
                         while  E == F:
-                            E=new_fetch(grid)
-                            F=new_fetch(grid)                        
+                            E=fetch(grid)
+                            F=fetch(grid)                        
                         to  = E[0], E[1]
                         fro = F[0], F[1]
                         switch_flip(S,to,fro,width,height,myfont)
-                        print("*",of_pair,"to = ",to,num[fro[0]][fro[1]]," fro = ",fro,num[to[0]][to[1]] )
-                        
             if Ev.type == P.MOUSEBUTTONDOWN:
                 mx,my = P.mouse.get_pos()
                 atcol = mx * grid // box[0]
                 atrow = my * grid // box[1]
                 width=box[0]/grid
                 height=box[1]/grid
-                #x=atcol*width
-                #y=atrow*height
                 if atcol == target[0] or atrow == target[1]:
                     if atcol == target[0]-1 or atcol == target[0]+1: 
                         switch_flip(S,[atcol,atrow],target,width,height,myfont)
@@ -145,14 +120,12 @@ def loop(S,width,height,myfont):
                         target[1]=atrow
     P.display.quit()
     return
-
 def main():
     global num,target
     S = init(box,white)
     width=w/grid
     height=h/grid
     myfont = P.font.SysFont(None , 350//grid )
-      
     for row in range(grid):
         for col in range(grid):
             num[col][row] = row*grid+col+1
@@ -161,13 +134,10 @@ def main():
                 num[col][row]=""
                 target=[col,row]
                 continue
-            
             kolor[col][row]=[R.randint(0,255),R.randint(0,255),R.randint(0,255)]
             tile(S,col*width,row*height,width,height,kolor[col][row],num[col][row],myfont)
             P.time.delay(37)
-           
     loop(S,width,height,myfont)
-
 if __name__ =="__main__":
     main()
 
