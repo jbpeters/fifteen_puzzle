@@ -85,6 +85,17 @@ def fetch(G):
     f=R.randint(0,G-1),R.randint(0,G-1)
     return f
 
+
+def new_fetch(G):    
+    px = R.randint(0,G-1)
+    py = R.randint(0,G-1)
+    if px == py :print("diag",px,py)
+    while ( px == G-1 and py== G-1  ):
+        px=R.randint(0,G-1)
+        py=R.randint(0,G-1)
+    f = px,py
+    return f
+
 def display():
     for row in range(grid):
         for col in range(grid):
@@ -96,28 +107,28 @@ def loop(S,width,height,myfont):
     looping = True
     print("looping")
     while looping:
-        for E in P.event.get():
-            if E.type == P.KEYDOWN:
-                if E.key == P.K_ESCAPE:
+        for Ev in P.event.get():
+            if Ev.type == P.KEYDOWN:
+                if Ev.key == P.K_ESCAPE:
                     looping = False
-
-                if E.key == P.K_d:
+            
+                if Ev.key == P.K_d:
                     print(display())
-
-                if E.key == P.K_m:                    
-                    for of_pair in range (22):
-                        to  = fetch(grid)
-                        fro = fetch(grid)
-                        if to == fro:
-                            fro = fetch(grid)
-                        elif to == (grid-1,grid-1):
-                            to = fetch(grid)
-                        elif fro == (grid-1,grid-1):
-                            fro = fetch(grid)
+            
+                if Ev.key == P.K_m:                   
+                    print("///////////////////////////////////")
+                    for of_pair in range(12):
+                        E=new_fetch(grid)
+                        F=new_fetch(grid)
+                        while  E == F:
+                            E=new_fetch(grid)
+                            F=new_fetch(grid)                        
+                        to  = E[0], E[1]
+                        fro = F[0], F[1]
                         switch_flip(S,to,fro,width,height,myfont)
-                        #print(of_pair,"to = ",to,num[to[0]][to[1]]," fro= ",fro,num[fro[0]][fro[1]] )
+                        print("*",of_pair,"to = ",to,num[fro[0]][fro[1]]," fro = ",fro,num[to[0]][to[1]] )
                         
-            if E.type == P.MOUSEBUTTONDOWN:
+            if Ev.type == P.MOUSEBUTTONDOWN:
                 mx,my = P.mouse.get_pos()
                 atcol = mx * grid // box[0]
                 atrow = my * grid // box[1]
