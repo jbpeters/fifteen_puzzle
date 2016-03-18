@@ -7,11 +7,13 @@ grid  = 4
 num   = [[0 for _ in range(grid)] for _ in range(grid)]
 kolor = [[0 for _ in range(grid)] for _ in range(grid)]
 D     = [[0 for _ in range(grid)] for _ in range(grid)]
+complete = [[ 0 for _ in range(grid)] for _ in range(grid)]
 def init (size,kolor):
     P.display.init()
     P.font.init()
     S = P.display.set_mode((size))
     S.fill(kolor)
+    P.display.set_caption("15 puzzle      M  to 'mix'          ESC  to 'quit'")
     P.display.flip()
     return S
 def least(A):
@@ -118,17 +120,19 @@ def loop(S,width,height,myfont):
                     if atrow == target[1]-1 or atrow == target[1]+1:
                         switch_flip(S,[atcol,atrow],target,width,height,myfont)
                         target[1]=atrow
+                if display() == [[1, 2, 3, 4], [ 5, 6, 7, 8], [ 9, 10, 11, 12], [ 13, 14, 15, '']]:
+                    tile(S,0.9*width,1.5*height,2.2*width,height,[220,0,0],"You WIN!!",myfont)
     P.display.quit()
     return
 def main():
     global num,target
     S = init(box,white)
-    width=w/grid
-    height=h/grid
+    width  = w/grid
+    height = h/grid
     myfont = P.font.SysFont(None , 350//grid )
     for row in range(grid):
         for col in range(grid):
-            num[col][row] = row*grid+col+1
+            num[col][row] = row*grid+col+1            
             if col == grid - 1 and row == grid - 1:
                 kolor[col][row]=white
                 num[col][row]=""
@@ -137,6 +141,7 @@ def main():
             kolor[col][row]=[R.randint(0,255),R.randint(0,255),R.randint(0,255)]
             tile(S,col*width,row*height,width,height,kolor[col][row],num[col][row],myfont)
             P.time.delay(37)
+    
     loop(S,width,height,myfont)
 if __name__ =="__main__":
     main()
