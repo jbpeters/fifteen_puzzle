@@ -7,13 +7,13 @@ grid  = 4
 num   = [[0 for _ in range(grid)] for _ in range(grid)]
 kolor = [[0 for _ in range(grid)] for _ in range(grid)]
 D     = [[0 for _ in range(grid)] for _ in range(grid)]
-complete = [[ 0 for _ in range(grid)] for _ in range(grid)]
+winner= [[0 for _ in range(grid)] for _ in range(grid)]
 def init (size,kolor):
     P.display.init()
     P.font.init()
     S = P.display.set_mode((size))
     S.fill(kolor)
-    P.display.set_caption("15 puzzle      M  to 'mix'          ESC  to 'quit'")
+    P.display.set_caption( str(grid*grid -1)+" puzzle      M  to 'mix'          ESC  to 'quit'")
     P.display.flip()
     return S
 def least(A):
@@ -27,7 +27,7 @@ def least(A):
     else:
         return 2
 def contrast(RGB):
-    Z=[0,0,0]
+    Z=[0,0,0] 
     C=[127,127,127]
     S=[ C[0]-RGB[0],C[1]-RGB[1],C[2]-RGB[2]]
     L=[0,0,0]
@@ -82,6 +82,17 @@ def fetch(G):
         py=R.randint(0,G-1)
     f = px,py
     return f
+
+def xwinner():
+    for row in range( 0 , grid):
+        for col in range(0,grid):
+            if col == grid-1 and row == grid -1:
+                winner[col][row] = ''
+                continue
+            winner[row][col] = row*grid+col+1
+    return winner
+
+
 def display():
     for row in range(grid):
         for col in range(grid):
@@ -97,7 +108,8 @@ def loop(S,width,height,myfont):
                     looping = False
                 if Ev.key == P.K_d:
                     print(display())
-                if Ev.key == P.K_m:                   
+                if Ev.key == P.K_m:
+                    tile(S,(grid-1)*width,(grid-1)*height,width,height,white,"",myfont)
                     for of_pair in range(22):
                         E=fetch(grid)
                         F=fetch(grid)
@@ -107,6 +119,7 @@ def loop(S,width,height,myfont):
                         to  = E[0], E[1]
                         fro = F[0], F[1]
                         switch_flip(S,to,fro,width,height,myfont)
+                        
             if Ev.type == P.MOUSEBUTTONDOWN:
                 mx,my = P.mouse.get_pos()
                 atcol = mx * grid // box[0]
@@ -120,8 +133,8 @@ def loop(S,width,height,myfont):
                     if atrow == target[1]-1 or atrow == target[1]+1:
                         switch_flip(S,[atcol,atrow],target,width,height,myfont)
                         target[1]=atrow
-                if display() == [[1, 2, 3, 4], [ 5, 6, 7, 8], [ 9, 10, 11, 12], [ 13, 14, 15, '']]:
-                    tile(S,0.9*width,1.5*height,2.2*width,height,[220,0,0],"You WIN!!",myfont)
+                if display() == winner:
+                    tile(S,0,0,w,h,[220,0,0],"You WIN!!",myfont)
     P.display.quit()
     return
 def main():
@@ -130,6 +143,7 @@ def main():
     width  = w/grid
     height = h/grid
     myfont = P.font.SysFont(None , 350//grid )
+    winner=xwinner()
     for row in range(grid):
         for col in range(grid):
             num[col][row] = row*grid+col+1            
@@ -141,7 +155,6 @@ def main():
             kolor[col][row]=[R.randint(0,255),R.randint(0,255),R.randint(0,255)]
             tile(S,col*width,row*height,width,height,kolor[col][row],num[col][row],myfont)
             P.time.delay(37)
-    
     loop(S,width,height,myfont)
 if __name__ =="__main__":
     main()
