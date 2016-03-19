@@ -1,6 +1,11 @@
 #! /usr/bin/python3
+import sys
 import pygame as P
+import pygame.mixer 
 import random as R
+
+pygame.mixer.pre_init(44100, 16,2,4096)
+P.init()
 box   = (w,h) = (700,700)
 white = [255,255,255]
 grid  = 4 
@@ -8,7 +13,9 @@ num   = [[0 for _ in range(grid)] for _ in range(grid)]
 kolor = [[0 for _ in range(grid)] for _ in range(grid)]
 D     = [[0 for _ in range(grid)] for _ in range(grid)]
 winner= [[0 for _ in range(grid)] for _ in range(grid)]
+sound = pygame.mixer.Sound('Click.wav')
 def init (size,kolor):
+    P.init()
     P.display.init()
     P.font.init()
     S = P.display.set_mode((size))
@@ -119,7 +126,6 @@ def loop(S,width,height,myfont):
                         to  = E[0], E[1]
                         fro = F[0], F[1]
                         switch_flip(S,to,fro,width,height,myfont)
-                        
             if Ev.type == P.MOUSEBUTTONDOWN:
                 mx,my = P.mouse.get_pos()
                 atcol = mx * grid // box[0]
@@ -127,12 +133,14 @@ def loop(S,width,height,myfont):
                 width=box[0]/grid
                 height=box[1]/grid
                 if atcol == target[0] or atrow == target[1]:
+                    sound.play()
                     if atcol == target[0]-1 or atcol == target[0]+1: 
                         switch_flip(S,[atcol,atrow],target,width,height,myfont)
                         target[0]=atcol
                     if atrow == target[1]-1 or atrow == target[1]+1:
                         switch_flip(S,[atcol,atrow],target,width,height,myfont)
                         target[1]=atrow
+                    sound.play()
                 if display() == winner:
                     tile(S,0,0,w,h,[220,0,0],"You WIN!!",myfont)
     P.display.quit()
