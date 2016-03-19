@@ -1,9 +1,7 @@
 #! /usr/bin/python3
-import sys
 import pygame as P
 import pygame.mixer 
 import random as R
-
 pygame.mixer.pre_init(44100, 16,2,4096)
 P.init()
 box   = (w,h) = (700,700)
@@ -14,6 +12,7 @@ kolor = [[0 for _ in range(grid)] for _ in range(grid)]
 D     = [[0 for _ in range(grid)] for _ in range(grid)]
 winner= [[0 for _ in range(grid)] for _ in range(grid)]
 sound = pygame.mixer.Sound('Click.wav')
+sound.set_volume(0.125)
 def init (size,kolor):
     P.init()
     P.display.init()
@@ -132,7 +131,7 @@ def loop(S,width,height,myfont):
                 atrow = my * grid // box[1]
                 width=box[0]/grid
                 height=box[1]/grid
-                if atcol == target[0] or atrow == target[1]:
+                if (atcol == target[0]) or (atrow == target[1]): 
                     sound.play()
                     if atcol == target[0]-1 or atcol == target[0]+1: 
                         switch_flip(S,[atcol,atrow],target,width,height,myfont)
@@ -140,7 +139,6 @@ def loop(S,width,height,myfont):
                     if atrow == target[1]-1 or atrow == target[1]+1:
                         switch_flip(S,[atcol,atrow],target,width,height,myfont)
                         target[1]=atrow
-                    sound.play()
                 if display() == winner:
                     tile(S,0,0,w,h,[220,0,0],"You WIN!!",myfont)
     P.display.quit()
@@ -166,4 +164,3 @@ def main():
     loop(S,width,height,myfont)
 if __name__ =="__main__":
     main()
-
