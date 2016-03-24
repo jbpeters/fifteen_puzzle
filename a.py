@@ -1,12 +1,20 @@
 #! /usr/bin/python3
+import sys
 import pygame as P
 import pygame.mixer 
 import random as R
+
 pygame.mixer.pre_init(44100, 16,2,4096)
 P.init()
+if len(sys.argv)==1:
+    grid=4
+else:
+    grid=int(sys.argv[1])
+print("grid of ",grid)
+
 box   = (w,h) = (700,700)
 white = [255,255,255]
-grid  = 4 
+#grid  = 4 
 num   = [[0 for _ in range(grid)] for _ in range(grid)]
 kolor = [[0 for _ in range(grid)] for _ in range(grid)]
 D     = [[0 for _ in range(grid)] for _ in range(grid)]
@@ -145,6 +153,7 @@ def loop(S,width,height,myfont):
     return
 def main():
     global num,target
+    
     S = init(box,white)
     width  = w/grid
     height = h/grid
