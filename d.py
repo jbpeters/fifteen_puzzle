@@ -59,29 +59,31 @@ def contrast(RGB):
         Z[i] = int(RGB[i] + t * S[i])
         if Z[i] < 0 :Z[i] = 0
         if Z[i] > 255 : Z[i] = 255 
-    print("Z   =  ",Z)
+    print("Z   = ",Z)
     print("============================")
     return Z
 
 def main():  
     global myfont, S
-    S  = init((200,200),[164,164,164])
+    boxsize = w,h =  200,200
+    S  = init(boxsize,[16,16,16])
     myfont = P.font.SysFont(None , 350//3 )
-    blue =[0,0,120]
-    P.draw.rect(S,blue,(30,30,140,140))
-    n = 88
+    _r = R.randint(0,255)
+    _g = R.randint(0,255)
+    _b = R.randint(0,255)
+    #_r,_g,_b = 253,251,252
+    kolor = [_r,_g,_b]
+    border = 15,15
+    Rect = ( border[0],border[1],boxsize[0]-2*border[0],boxsize[1]-2*border[1] )
+    P.draw.rect(S,kolor,Rect)
+    n = 'O'  
     n = str(n)
     tilesize = myfont.size(n)
-    S2 = myfont.render(n,1,contrast(blue))
-    S.blit(S2,(140-tilesize)/2,(140-tilesize)/2)
-
-    
-    
+    S2 = myfont.render(n,1,contrast(kolor))
+    textbox = ((200-tilesize[0])/2,(200-tilesize[1])/2)   
+    S.blit( S2 , textbox )
     P.display.flip()
-
-
     loop()            
-
     
 if __name__ == "__main__":
     main()
