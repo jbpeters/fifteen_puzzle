@@ -152,8 +152,7 @@ def loop(S,width,height,myfont):
     P.display.quit()
     return
 def main():
-    global num,target
-    
+    global num,target    
     S = init(box,white)
     width  = w/grid
     height = h/grid

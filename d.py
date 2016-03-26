@@ -6,6 +6,7 @@ import random as R
 import time as T
 
 def init(size,color):
+    P.init()
     P.display.init()
     P.font.init()
     S=P.display.set_mode(size)
@@ -20,6 +21,7 @@ def loop():
             if E.type == P.KEYDOWN:
                 if E.key == P.K_ESCAPE:
                     looping = False
+                    
     return
 
 def least(A):
@@ -61,29 +63,25 @@ def contrast(RGB):
     print("============================")
     return Z
 
-def main():
-    for r in range(0,255):
-        for g in range(0,255):
-            for b in range(0,255):
-                k=contrast([r,g,b])
-                flag=0
-                for i in range(0,2):
-                    if  k[i] < 0 or k[i] >255:
-                        flag = 1
+def main():  
+    global myfont, S
+    S  = init((200,200),[164,164,164])
+    myfont = P.font.SysFont(None , 350//3 )
+    blue =[0,0,120]
+    P.draw.rect(S,blue,(30,30,140,140))
+    n = 88
+    n = str(n)
+    tilesize = myfont.size(n)
+    S2 = myfont.render(n,1,contrast(blue))
+    S.blit(S2,(140-tilesize)/2,(140-tilesize)/2)
 
-                    if flag ==1 :
-                        print ([r,g,b],k)
+    
+    
+    P.display.flip()
 
 
+    loop()            
 
-
-   
-    
-    
-    
-    
-    
-    
     
 if __name__ == "__main__":
     main()
