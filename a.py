@@ -6,6 +6,7 @@ import random as R
 
 pygame.mixer.pre_init(44100, 16,2,4096)
 P.init()
+clock = P.time.Clock()
 if len(sys.argv)==1:
     grid=4
 else:
@@ -14,7 +15,6 @@ print("grid of ",grid)
 
 box   = (w,h) = (700,700)
 white = [255,255,255]
-#grid  = 4 
 num   = [[0 for _ in range(grid)] for _ in range(grid)]
 kolor = [[0 for _ in range(grid)] for _ in range(grid)]
 D     = [[0 for _ in range(grid)] for _ in range(grid)]
@@ -72,6 +72,7 @@ def tile(surf,x,y,width,height,kolor,num,myfont):
         ss = myfont.size(str(num))
         surf.blit(surf2,(x+(width-ss[0])/2,y+(height-ss[1])/2))
     P.display.flip()
+    clock.tick(28)
     return
 def switch_flip(S, P1, P2, width, height, myfont):
     c1,r1 = P1
