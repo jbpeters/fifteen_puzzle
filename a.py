@@ -157,7 +157,7 @@ def main():
     S = init(box,white)
     width  = w/grid
     height = h/grid
-    myfont = P.font.SysFont(None , 350//grid )
+    myfont = P.font.SysFont(None , int(w/(1.1*grid) ))
     winner=xwinner()
     for row in range(grid):
         for col in range(grid):
