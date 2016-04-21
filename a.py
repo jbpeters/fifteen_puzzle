@@ -4,6 +4,7 @@ import pygame as P
 import pygame.mixer 
 import random as R
 
+
 pygame.mixer.pre_init(44100, 16,2,4096)
 P.init()
 clock = P.time.Clock()
