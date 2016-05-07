@@ -12,7 +12,7 @@ if len(sys.argv)==1:
     grid=4
 else:
     grid=int(sys.argv[1])
-print("grid of ",grid)
+#print("grid of ",grid)
 
 box   = (w,h) = (700,700)
 white = [255,255,255]
@@ -114,9 +114,28 @@ def display():
         for col in range(grid):
             D[col][row]=num[row][col]
     return D
-def loop(S,width,height,myfont):
-    looping = True
-    print("looping")
+def loop(S,width,height,myfont):   
+    mixing = looping = True
+    print("mixing = ",mixing)
+    while mixing:
+        for Ev in P.event.get():
+            print("type is ",Ev.type)
+            if Ev.type == P.MOUSEBUTTONDOWN:
+                mixing = False
+            else:
+                tile(S,(grid-1)*width,(grid-1)*height,width,height,white,"",myfont)
+
+                for of_pair in range(2):
+                    E=fetch(grid)
+                    F=fetch(grid)
+                    while  E == F:
+                        E=fetch(grid)
+                        F=fetch(grid)                        
+                    to  = E[0], E[1]
+                    fro = F[0], F[1]
+                    switch_flip(S,to,fro,width,height,myfont)
+    
+    print("loopin is ",looping)
     while looping:
         for Ev in P.event.get():
             if Ev.type == P.KEYDOWN:
@@ -124,26 +143,15 @@ def loop(S,width,height,myfont):
                     looping = False
                 if Ev.key == P.K_d:
                     print(display())
-                if Ev.key == P.K_m:
-                    tile(S,(grid-1)*width,(grid-1)*height,width,height,white,"",myfont)
-                    for of_pair in range(22):
-                        E=fetch(grid)
-                        F=fetch(grid)
-                        while  E == F:
-                            E=fetch(grid)
-                            F=fetch(grid)                        
-                        to  = E[0], E[1]
-                        fro = F[0], F[1]
-                        switch_flip(S,to,fro,width,height,myfont)
             if Ev.type == P.MOUSEBUTTONDOWN:
                 mx,my = P.mouse.get_pos()
                 atcol = mx * grid // box[0]
                 atrow = my * grid // box[1]
                 width=box[0]/grid
                 height=box[1]/grid
-                if (atcol == target[0]) or (atrow == target[1]): 
+                if (atcol == target[0]) or (atrow == target[1]):
                     sound.play()
-                    if atcol == target[0]-1 or atcol == target[0]+1: 
+                    if atcol == target[0]-1 or atcol == target[0]+1:
                         switch_flip(S,[atcol,atrow],target,width,height,myfont)
                         target[0]=atcol
                     if atrow == target[1]-1 or atrow == target[1]+1:
@@ -153,6 +161,7 @@ def loop(S,width,height,myfont):
                     tile(S,0,0,w,h,[220,0,0],"You WIN!!",myfont)
     P.display.quit()
     return
+
 def main():
     global num,target    
     S = init(box,white)
