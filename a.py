@@ -123,22 +123,25 @@ def loop(S,width,height,myfont):
             if Ev.type == P.MOUSEBUTTONDOWN:
                 mixing = False
             else:
-                tile(S,(grid-1)*width,(grid-1)*height,width,height,white,"",myfont)
-
-                for of_pair in range(2):
-                    E=fetch(grid)
-                    F=fetch(grid)
-                    while  E == F:
+                if Ev.type == P.MOUSEMOTION:
+                    tile(S,(grid-1)*width,(grid-1)*height,width,height,white,"",myfont)
+                    P.event.clear()
+                    for of_pair in range(2):
                         E=fetch(grid)
-                        F=fetch(grid)                        
-                    to  = E[0], E[1]
-                    fro = F[0], F[1]
-                    switch_flip(S,to,fro,width,height,myfont)
+                        F=fetch(grid)
+                        while  E == F:
+                            E=fetch(grid)
+                            F=fetch(grid)                        
+                        to  = E[0], E[1]
+                        fro = F[0], F[1]
+                        switch_flip(S,to,fro,width,height,myfont)
     
     print("loopin is ",looping)
     while looping:
         for Ev in P.event.get():
             if Ev.type == P.KEYDOWN:
+                if Ev.key == P.K_m:
+                    mixing = True
                 if Ev.key == P.K_ESCAPE:
                     looping = False
                 if Ev.key == P.K_d:
