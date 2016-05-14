@@ -28,7 +28,7 @@ def init (size,kolor):
     P.font.init()
     S = P.display.set_mode((size))
     S.fill(kolor)
-    P.display.set_caption( str(grid*grid -1)+" puzzle      M  to 'mix'          ESC  to 'quit'")
+    P.display.set_caption( str(grid*grid -1)+" puzzle      Mouse-over and click to start      ESC  to 'quit'")
     P.display.flip()
     return S
 def least(A):
@@ -116,10 +116,9 @@ def display():
     return D
 def loop(S,width,height,myfont):   
     mixing = looping = True
-    print("mixing = ",mixing)
     while mixing:
         for Ev in P.event.get():
-            print("type is ",Ev.type)
+            #print("type is ",Ev.type)
             if Ev.type == P.MOUSEBUTTONDOWN:
                 mixing = False
             else:
@@ -136,7 +135,6 @@ def loop(S,width,height,myfont):
                         fro = F[0], F[1]
                         switch_flip(S,to,fro,width,height,myfont)
     
-    print("loopin is ",looping)
     while looping:
         for Ev in P.event.get():
             if Ev.type == P.KEYDOWN:
