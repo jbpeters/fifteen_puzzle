@@ -9,7 +9,7 @@ pygame.mixer.pre_init(44100, 16,2,4096)
 P.init()
 clock = P.time.Clock()
 if len(sys.argv)==1:
-    grid=4
+    grid=3
 else:
     grid=int(sys.argv[1])
 #print("grid of ",grid)
@@ -28,8 +28,6 @@ def init (size,kolor):
     P.font.init()
     S = P.display.set_mode((size))
     S.fill(kolor)
-    P.display.set_caption( str(grid*grid -1)+" puzzle      Mouse-over and click to start      ESC  to 'quit'")
-    P.display.flip()
     return S
 def least(A):
     if  A[0] <= A[1]:
@@ -114,11 +112,11 @@ def display():
         for col in range(grid):
             D[col][row]=num[row][col]
     return D
+
 def loop(S,width,height,myfont):   
     mixing = looping = True
     while mixing:
         for Ev in P.event.get():
-            #print("type is ",Ev.type)
             if Ev.type == P.MOUSEBUTTONDOWN:
                 mixing = False
             else:
@@ -142,8 +140,11 @@ def loop(S,width,height,myfont):
                     mixing = True
                 if Ev.key == P.K_ESCAPE:
                     looping = False
-                if Ev.key == P.K_d:
-                    print(display())
+                #if Ev.key == P.K_d:                    
+                    #print(display())
+                if Ev.key == P.K_r and  display() == winner:
+                        reset(S,width,height,myfont)
+                        
             if Ev.type == P.MOUSEBUTTONDOWN:
                 mx,my = P.mouse.get_pos()
                 atcol = mx * grid // box[0]
@@ -160,16 +161,13 @@ def loop(S,width,height,myfont):
                         target[1]=atrow
                 if display() == winner:
                     tile(S,0,0,w,h,[220,0,0],"You WIN!!",myfont)
-    P.display.quit()
+                    P.display.set_caption( str(grid*grid -1)+" puzzle      hit \"R\" to restart      ESC  to 'quit'")
+            
     return
 
-def main():
+def reset(S,width,height,myfont):
     global num,target    
-    S = init(box,white)
-    width  = w/grid
-    height = h/grid
-    myfont = P.font.SysFont(None , int(w/(1.1*grid) ))
-    winner=xwinner()
+    P.display.set_caption( str(grid*grid -1)+" puzzle      Mouse-over and click to start      ESC  to 'quit'")
     for row in range(grid):
         for col in range(grid):
             num[col][row] = row*grid+col+1            
@@ -182,5 +180,19 @@ def main():
             tile(S,col*width,row*height,width,height,kolor[col][row],num[col][row],myfont)
             P.time.delay(37)
     loop(S,width,height,myfont)
+    return
+
+
+
+def main():
+    global S,num,target    
+    S = init(box,white)
+    width  = w/grid
+    height = h/grid
+    myfont = P.font.SysFont(None , int(w/(1.1*grid) ))
+    winner=xwinner()
+    reset(S,width,height,myfont)
+    P.display.quit()
+
 if __name__ =="__main__":
     main()
