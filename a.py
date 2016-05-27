@@ -9,7 +9,7 @@ pygame.mixer.pre_init(44100, 16,2,4096)
 P.init()
 clock = P.time.Clock()
 if len(sys.argv)==1:
-    grid=3
+    grid=4
 else:
     grid=int(sys.argv[1])
 #print("grid of ",grid)
