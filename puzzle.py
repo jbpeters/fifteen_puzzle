@@ -20,7 +20,7 @@ num   = [[0 for _ in range(grid)] for _ in range(grid)]
 kolor = [[0 for _ in range(grid)] for _ in range(grid)]
 D     = [[0 for _ in range(grid)] for _ in range(grid)]
 winner= [[0 for _ in range(grid)] for _ in range(grid)]
-sound = pygame.mixer.Sound('Click.wav')
+sound = pygame.mixer.Sound('.Click.wav')
 sound.set_volume(0.125)
 def init (size,kolor):
     P.init()
